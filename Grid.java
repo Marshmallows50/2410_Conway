@@ -1,9 +1,27 @@
 package conway;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.PrintStream;
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
+import java.util.Scanner;
 
-public class Grid {
+/**
+ * Doc comments for Classes go here!
+ * @author Hunter
+ *
+ */
+
+public class Grid implements Serializable{
 	
 	// ******************Fields******************
 	// TODO: move isPaused to main program.
@@ -127,9 +145,13 @@ public class Grid {
 	/**
 	 * generate next Iterations.
 	 */
-	public void nextIteration() {
+	public ArrayList<ArrayList<Cell>> nextIteration() {
 		ArrayList<Cell> toKill = new ArrayList<Cell>();
 		ArrayList<Cell> toLive = new ArrayList<Cell>();
+		
+		ArrayList<ArrayList<Cell>> test = new ArrayList<ArrayList<Cell>>();
+		test.add(toLive);
+		test.add(toKill);
 		
 		for(ArrayList<Cell> rows: this.columns) {
 			for(Cell cell: rows) {
@@ -159,14 +181,84 @@ public class Grid {
 		for(Cell cell:toKill) {
 			cell.setDead();
 		}
+		
+		return test;
 	}
 	
 	/**
 	 * saves current Grid to a file
+	 * Method ideas: Every coordinate written to a file on a new line
+	 * Save object to a file via serialization then import file 
+	 * TO DO Create Folder object to store Serialization file
 	 */
 	public void saveGrid() {
-		// TODO: implement
+		
+	
+		
+		
 	}
+	
+//	public void createSaveFolder() {
+//		
+//		String d = System.getProperty("user.home");
+//		String directory = d + File.separator + "Documents" + File.separator + "Conway";
+//		File resources = new File(directory);
+//		
+//		if (resources.exists() == false) {
+//			
+//			resources.mkdirs();
+//			System.out.println("File Created.");
+//			
+//		}
+//		
+//	}
+	
+	@SuppressWarnings("unchecked")
+	public void deserialize() {
+		
+		columns = null;
+          try {
+        	  
+              FileInputStream fileIn = new FileInputStream("Grid.ser"); //Create additional files based on time stamp Grid-xxx-xxx-xxx.ser x's = timestamp Grid-09-17-19.ser
+              ObjectInputStream streamIn = new ObjectInputStream(fileIn);
+              columns = (ArrayList<ArrayList<Cell>>) streamIn.readObject();
+              streamIn.close();
+              fileIn.close();
+           } catch (IOException e) {
+              e.printStackTrace();
+              return;
+           } catch (ClassNotFoundException e) {
+              e.printStackTrace();
+              return;
+           }
+    }
+
+    /**
+     * writes entries to list.ser
+     */
+    public void serialize() {
+    	
+		String d = System.getProperty("user.home");
+		String directory = d + File.separator + "Documents" + File.separator + "Conway";
+		File resources = new File(directory);
+		
+		if (resources.exists() == false) {
+			
+			resources.mkdirs();
+			System.out.println("File Created.");
+			
+		}
+    	
+          try {
+              FileOutputStream fileOut = new FileOutputStream(directory + File.separator + new Date().getTime() + "Grid.ser");
+              ObjectOutputStream streamOut = new ObjectOutputStream(fileOut);
+              streamOut.writeObject(columns);
+              streamOut.close();
+              fileOut.close();
+           } catch (IOException e) {
+              e.printStackTrace();
+           }
+    }
 	
 	/**
 	 * Prints the Grid to the Console.
@@ -175,9 +267,12 @@ public class Grid {
 		for(ArrayList<Cell> i:columns) {
 			for(Cell cell: i) {
 				System.out.print(cell.getStringValue() + " ");
+				
+				
 			}
 			System.out.println();
 		}
+
 	}
 	
 	
@@ -190,5 +285,6 @@ public class Grid {
 	 */
 	public Cell getCell(int row, int column) {
 		return columns.get(row).get(column);
+		
 	}
 }
