@@ -1,15 +1,21 @@
 package conway;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Grid {
+public class Grid implements Serializable {
 	
 	// ******************Fields******************
 	// TODO: move isPaused to main program.
 	//private boolean isPaused;
 	
-	private ArrayList<ArrayList<Cell>> columns;
+	public ArrayList<ArrayList<Cell>> columns;
 	
 	public int width;
 	public int height;
@@ -165,9 +171,43 @@ public class Grid {
 	 * saves current Grid to a file
 	 */
 	public void saveGrid() {
-		// TODO: implement
+		
 	}
 	
+	
+	
+	@SuppressWarnings("unchecked")
+	public void deserialize() {
+		columns = null;
+	      try {
+	          FileInputStream fileIn = new FileInputStream("Grid.ser");
+	          ObjectInputStream streamIn = new ObjectInputStream(fileIn);
+	          columns = (ArrayList<ArrayList<Cell>>) streamIn.readObject();
+	          streamIn.close();
+	          fileIn.close();
+	       } catch (IOException e) {
+	          e.printStackTrace();
+	          return;
+	       } catch (ClassNotFoundException e) {
+	          e.printStackTrace();
+	          return;
+	       }
+	}
+	
+	/**
+	 * writes entries to list.ser
+	 */
+	public void serialize() {
+	      try {
+	          FileOutputStream fileOut = new FileOutputStream("Grid.ser");
+	          ObjectOutputStream streamOut = new ObjectOutputStream(fileOut);
+	          streamOut.writeObject(columns);
+	          streamOut.close();
+	          fileOut.close();
+	       } catch (IOException e) {
+	          e.printStackTrace();
+	       }
+	}
 	/**
 	 * Prints the Grid to the Console.
 	 */
@@ -190,5 +230,14 @@ public class Grid {
 	 */
 	public Cell getCell(int row, int column) {
 		return columns.get(row).get(column);
+	}
+	
+	
+	public int getWidth() {
+		return width;
+	}
+	
+	public int getHeight() {
+		return height;
 	}
 }
