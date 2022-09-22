@@ -1,5 +1,6 @@
 package conway;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -7,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
 
 public class Grid implements Serializable {
@@ -198,16 +200,27 @@ public class Grid implements Serializable {
 	 * writes entries to list.ser
 	 */
 	public void serialize() {
-	      try {
-	          FileOutputStream fileOut = new FileOutputStream("Grid.ser");
-	          ObjectOutputStream streamOut = new ObjectOutputStream(fileOut);
-	          streamOut.writeObject(columns);
-	          streamOut.close();
-	          fileOut.close();
-	       } catch (IOException e) {
-	          e.printStackTrace();
-	       }
-	}
+		String d = System.getProperty("user.home");
+		String directory = d + File.separator + "Documents" + File.separator + "Conway";
+		File resources = new File(directory);
+		
+		if (resources.exists() == false) {
+			
+			resources.mkdirs();
+			System.out.println("File Created.");
+			
+		}
+    	
+          try {
+              FileOutputStream fileOut = new FileOutputStream(directory + File.separator + new Date().getTime() + "Grid.ser");
+              ObjectOutputStream streamOut = new ObjectOutputStream(fileOut);
+              streamOut.writeObject(columns);
+              streamOut.close();
+              fileOut.close();
+           } catch (IOException e) {
+              e.printStackTrace();
+           }
+    }
 	/**
 	 * Prints the Grid to the Console.
 	 */
