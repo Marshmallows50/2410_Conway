@@ -6,7 +6,11 @@ import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -72,7 +76,6 @@ public class GridGui extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
 			}
 		});
 		controlPanel.add(stop);
@@ -86,6 +89,24 @@ public class GridGui extends JFrame {
 			}
 		});
 		controlPanel.add(randomize);
+		
+		JButton saveGrid = new JButton("Save Grid");
+		saveGrid.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				gridPanel.grid.serialize();
+			}
+		});
+		controlPanel.add(saveGrid);
+		
+		JButton importGrid = new JButton("Import Grid");
+		importGrid.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				gridPanel.grid.deserialize();
+			}
+		});
+		controlPanel.add(importGrid);
 		
 		contentPane.add(controlPanel, BorderLayout.NORTH);
 		contentPane.add(gridPanel);
