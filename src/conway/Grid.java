@@ -11,6 +11,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 
+import javax.swing.JFileChooser;
+
+/**
+ * 
+ * @author Gabe, Hunter, Jacob
+ *Our Grid class contains methods for creating saving and storing our grids.
+ */
 public class Grid implements Serializable {
 	
 	// ******************Fields******************
@@ -168,25 +175,24 @@ public class Grid implements Serializable {
 			cell.setDead();
 		}
 	}
-	
 	/**
-	 * saves current Grid to a file
+	 * Lets us choose a saved Grid to import into the game.
 	 */
-	public void saveGrid() {
-		
-	}
-	
-	
-	
 	@SuppressWarnings("unchecked")
 	public void deserialize() {
+
 		columns = null;
 	      try {
-	          FileInputStream fileIn = new FileInputStream("Grid.ser");
-	          ObjectInputStream streamIn = new ObjectInputStream(fileIn);
-	          columns = (ArrayList<ArrayList<Cell>>) streamIn.readObject();
-	          streamIn.close();
-	          fileIn.close();
+	    	  JFileChooser j = new JFileChooser();
+	    	  int response = j.showOpenDialog(null);
+	    	  if (response == JFileChooser.APPROVE_OPTION) {
+	    		  FileInputStream fileIn = new FileInputStream(j.getSelectedFile().getAbsolutePath());
+	    		  ObjectInputStream streamIn = new ObjectInputStream(fileIn);
+	    		  columns = (ArrayList<ArrayList<Cell>>) streamIn.readObject();
+		          streamIn.close();
+		          fileIn.close();
+	    	  }
+
 	       } catch (IOException e) {
 	          e.printStackTrace();
 	          return;
@@ -196,18 +202,16 @@ public class Grid implements Serializable {
 	       }
 	}
 	
-	/**
-	 * writes entries to list.ser
-	 */
+/**
+ * Creates our Game Directory if it doesn't already exist.
+ * Then saves our current Grid as a time stamped Grid.ser
+ */
 	public void serialize() {
-		String d = System.getProperty("user.home");
-		String directory = d + File.separator + "Documents" + File.separator + "Conway";
+		String directory = System.getProperty("user.home") + File.separator + "Documents" + File.separator + "Conway";
 		File resources = new File(directory);
 		
 		if (resources.exists() == false) {
-			
 			resources.mkdirs();
-			System.out.println("File Created.");
 			
 		}
     	

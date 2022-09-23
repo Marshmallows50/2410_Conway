@@ -2,6 +2,8 @@ package conway;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Desktop;
+import java.awt.Desktop.Action;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -13,15 +15,22 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
+/**
+ * 
+ * @author Gabe, Hunter, Jacob
+ *GridGui assigns buttons and their associated functionality to our Panel.
+ */
 public class GridGui extends JFrame {
 	
 	private JPanel contentPane;
 	private JPanel controlPanel;
 	private GridPanel gridPanel;
+	
 	
 //
 

@@ -12,6 +12,11 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
+/**
+ * 
+ * @author Gabe, Hunter, Jacob
+ * GridPanel creates our game panel with our interactive cells.
+ */
 public class GridPanel extends JPanel{
 	public JPanel contentPane;
 	public JPanel controlPanel;

@@ -2,6 +2,12 @@ package conway;
 
 import java.io.Serializable;
 
+/**
+ * 
+ * @author Gabe, Hunter, Jacob
+ * Our cell class is responsible for the majority of our cell data and logic.
+ *
+ */
 public class Cell implements Serializable {
 	// ******************Fields******************
 	private boolean isAlive = false;
